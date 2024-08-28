@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <style>
+        body {
+    background: #8C52FF;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#weather-container {
+    background: rgba(255, 255, 255, 0.3);
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+h2, label, p {
+    color: #fff;
+    margin: 8px 0;
+}
+
+input {
+    width: calc(100% - 16px);
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 1px solid white;
+    margin-top: 20px;
+}
+
+button {
+    background: #debff4;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100px;
+    font-size: 15px;
+}
+
+button:hover {
+    background: #8b48d7;
+}
+
+#temp-div p {
+    font-size: 50px;
+    margin-top: -5px;
+}
+
+#weather-info {
+    font-size: 20px;
+}
+
+
+#hourly-forecast {
+    margin-top: 50px;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hourly-item {
+    flex: 0 0 auto;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+    color: white;
+}
+
+.hourly-item img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+}
+
+#hourly-heading {
+    color: #fff;
+    margin-top: 10px;
+}
+    </style>
+</head>
+<body>
+    <div id="weather-container">
+        <h2>Neha Weather App</h2>
+        <input type="text" id="city" placeholder="Enter city">
+        <button onclick="getWeather()">Get info</button>
+
+        <div id="temp-div"></div>
+
+        <div id="weather-info"></div>
+    </div>
+    <script>
+        function getWeather() {
+    const apiKey = 'e0dc93be922c0f1f9e2c400dea8f27a0';
+    const city = document.getElementById('city').value;
+
+    if (!city) {
+        alert('Please enter a city');
+        return;
+    }
+
+    const currentWeatherUrl =
+`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+    fetch(currentWeatherUrl).then(response => response.json()).then(data => {
+            displayWeather(data);
+        });
+}
+
+function displayWeather(data) {
+    const tempDivInfo = document.getElementById('temp-div');
+    const weatherInfoDiv = document.getElementById('weather-info');
+
+    // Clear previous content
+    weatherInfoDiv.innerHTML = '';
+    tempDivInfo.innerHTML = '';
+
+    if (data.cod === '404') {
+        weatherInfoDiv.innerHTML = `<p>${data.message}</p>`;
+    } else {
+        const cityName = data.name;
+        const temperature = Math.round(data.main.temp - 273.15); //
+        const description = data.weather[0].description;
+
+        const temperatureHTML = `
+            <p>${temperature}°C</p>
+        `;
+
+        const weatherHtml = `
+            <p>${cityName}</p>
+            <p>${description}</p>
+        `;
+
+        tempDivInfo.innerHTML = temperatureHTML;
+        weatherInfoDiv.innerHTML = weatherHtml;
+    }
+}
+    </script>
+</body>
+</html>
