@@ -38,3 +38,5 @@ Clone the repository to your local machine:
 Get an API key from OpenWeatherMap and replace the apiKey placeholder in the JavaScript file with your actual API key 🔑.
 
 Open the index.html file in your browser, enter a city name, and check the weather! 🌤️
+
+
